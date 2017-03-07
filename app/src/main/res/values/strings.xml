@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">News_App</string>
+    <string name="heading">(Здесь будет заголовок новости)</string>
+    <string name="text_contents">(Здесь должено быть текстовое содержимое новости!!!)</string>
+    <string name="date">(15.07.1995)</string>
+    <string name="load_news">Пожалуйста, загрузите новость</string>
+    <string name="empty_string"></string>
+    <string name="it">IT</string>
+    <string name="update_button">Обновить</string>
+    <string name="background_update_button">Обновлять в фоне</string>
+    <string name="do_not_background_update_button">Не обновлять в фоне</string>
+    <string name="category_name">(КАТЕГОРИЯ)</string>
+</resources>
