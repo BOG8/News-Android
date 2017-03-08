@@ -1,11 +1,8 @@
 package com.example.news_app;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.Hashtable;
@@ -17,8 +14,10 @@ import ru.mail.weather.lib.Scheduler;
  * Created by Олег on 07.03.2017.
  */
 
-public class ServiceHelper {
+class ServiceHelper {
     private final static String LOG_TAG = ServiceHelper.class.getSimpleName();
+    private final static String BACKGROUND = "BACKGROUND";
+    private final static String NOT_BACKGROUND = "NOT_BACKGROUND";
     private final static int MINUTE = 60000;
 
     private static ServiceHelper instance;
@@ -46,23 +45,23 @@ public class ServiceHelper {
         intent.setAction(NewsIntentService.ACTION_NEWS);
         intent.putExtra(NewsIntentService.EXTRA_NEWS_CITY, currentCategory);
         intent.putExtra(NewsIntentService.EXTRA_NEWS_RESULT_RECEIVER, receiver);
-        intent.putExtra(NewsIntentService.EXTRA_NEWS_BACKGROUND, "NOT_BACKGROUNG");
+        intent.putExtra(NewsIntentService.EXTRA_NEWS_BACKGROUND, NOT_BACKGROUND);
         context.startService(intent);
 
         idCounter++;
     }
 
-    void getNewsByBackgroungWork(final Context context, final String currentCategory) {
-        Log.i(LOG_TAG, "getNewsByBackgroungWork");
+    void getNewsByBackgroundWork(final Context context, final String currentCategory) {
+        Log.i(LOG_TAG, "getNewsByBackgroundWork");
         Intent intent = new Intent(context, NewsIntentService.class);
         intent.setAction(NewsIntentService.ACTION_NEWS);
         intent.putExtra(NewsIntentService.EXTRA_NEWS_CITY, currentCategory);
-        intent.putExtra(NewsIntentService.EXTRA_NEWS_BACKGROUND, "BACKGROUND");
+        intent.putExtra(NewsIntentService.EXTRA_NEWS_BACKGROUND, BACKGROUND);
         Scheduler.getInstance().schedule(context, intent, MINUTE);
     }
 
-    void stopBackgroungWork(final Context context) {
-        Log.i(LOG_TAG, "stopBackgroungWork");
+    void stopBackgroundWork(final Context context) {
+        Log.i(LOG_TAG, "stopBackgroundWork");
         Intent intent = new Intent(context, NewsIntentService.class);
         intent.setAction(NewsIntentService.ACTION_NEWS);
         Scheduler.getInstance().unschedule(context, intent);

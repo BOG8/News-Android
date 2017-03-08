@@ -11,12 +11,11 @@ import ru.mail.weather.lib.Storage;
  * Created by Олег on 07.03.2017.
  */
 
-public class NewsProcessor {
+class NewsProcessor {
     private final static String LOG_TAG = NewsProcessor.class.getSimpleName();
 
-    public static boolean processCategory(final Context context, String currentCategory) {
+    static boolean processCategory(final Context context, String currentCategory) {
         Log.i(LOG_TAG, "processCategory (Making server request)");
-
         try {
             News news = new NewsLoader().loadNews(currentCategory);
             Storage.getInstance(context).saveNews(news);
@@ -25,7 +24,7 @@ public class NewsProcessor {
             Log.i(LOG_TAG, ex.getMessage());
             return false;
         }
-        Log.i(LOG_TAG, "Without errors");
+        Log.i(LOG_TAG, "processCategory run without errors");
         return true;
     }
 }

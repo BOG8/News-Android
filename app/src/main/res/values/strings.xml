@@ -10,4 +10,6 @@
     <string name="background_update_button">Обновлять в фоне</string>
     <string name="do_not_background_update_button">Не обновлять в фоне</string>
     <string name="category_name">(КАТЕГОРИЯ)</string>
+    <string name="background">BACKGROUND</string>
+    <string name="not_background">NOT_BACKGROUND</string>
 </resources>

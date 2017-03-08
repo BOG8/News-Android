@@ -11,13 +11,13 @@ import android.util.Log;
  */
 
 @SuppressLint("ParcelCreator")
-public class NewsResultReceiver extends ResultReceiver {
+class NewsResultReceiver extends ResultReceiver {
     private final static String LOG_TAG = NewsResultReceiver.class.getSimpleName();
 
     private final int requestId;
     private ServiceHelper.NewsResultListener listener;
 
-    public NewsResultReceiver(int requestId, final Handler handler) {
+    NewsResultReceiver(int requestId, final Handler handler) {
         super(handler);
         this.requestId = requestId;
         Log.i(LOG_TAG, "NewsResultReceiver");

@@ -118,12 +118,12 @@ public class MainActivity extends AppCompatActivity implements ServiceHelper.New
     public void startBackgroundUpdate() {
         Log.i(LOG_TAG, "startBackgroundUpdate");
         String categoryName = categoryChoiceButton.getText().toString();
-        ServiceHelper.getInstance().getNewsByBackgroungWork(this, categoryName);
+        ServiceHelper.getInstance().getNewsByBackgroundWork(this, categoryName);
     }
 
     public void stopBackgroundUpdate() {
         Log.i(LOG_TAG, "startBackgroundUpdate");
-        ServiceHelper.getInstance().stopBackgroungWork(this);
+        ServiceHelper.getInstance().stopBackgroundWork(this);
     }
 
     @Override
