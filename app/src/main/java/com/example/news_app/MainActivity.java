@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements ServiceHelper.New
         String category = newsStorage.loadCurrentTopic();
         if (category == null || category.isEmpty()) {
             newsStorage.saveCurrentTopic(Topics.IT);
+            category = Topics.IT;
         }
         categoryChoiceButton.setText(category);
 
