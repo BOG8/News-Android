@@ -16,8 +16,6 @@ import ru.mail.weather.lib.Scheduler;
 
 class ServiceHelper {
     private final static String LOG_TAG = ServiceHelper.class.getSimpleName();
-    private final static String BACKGROUND = "BACKGROUND";
-    private final static String NOT_BACKGROUND = "NOT_BACKGROUND";
     private final static int MINUTE = 60000;
 
     private static ServiceHelper instance;
@@ -45,7 +43,6 @@ class ServiceHelper {
         intent.setAction(NewsIntentService.ACTION_NEWS);
         intent.putExtra(NewsIntentService.EXTRA_NEWS_CITY, currentCategory);
         intent.putExtra(NewsIntentService.EXTRA_NEWS_RESULT_RECEIVER, receiver);
-        intent.putExtra(NewsIntentService.EXTRA_NEWS_BACKGROUND, NOT_BACKGROUND);
         context.startService(intent);
 
         idCounter++;
@@ -56,7 +53,6 @@ class ServiceHelper {
         Intent intent = new Intent(context, NewsIntentService.class);
         intent.setAction(NewsIntentService.ACTION_NEWS);
         intent.putExtra(NewsIntentService.EXTRA_NEWS_CITY, currentCategory);
-        intent.putExtra(NewsIntentService.EXTRA_NEWS_BACKGROUND, BACKGROUND);
         Scheduler.getInstance().schedule(context, intent, MINUTE);
     }
 

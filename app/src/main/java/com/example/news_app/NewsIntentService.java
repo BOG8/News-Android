@@ -14,14 +14,12 @@ import ru.mail.weather.lib.Storage;
 
 public class NewsIntentService extends IntentService {
     private final static String LOG_TAG = NewsIntentService.class.getSimpleName();
-    private final static String BACKGROUND = "BACKGROUND";
 
     public final static String ACTION_NEWS = "action.NEWS";
     public final static String ACTION_NEWS_RESULT_SUCCESS = "action.NEWS_RESULT_SUCCESS";
     public final static String ACTION_NEWS_RESULT_ERROR = "action.NEWS_RESULT_ERROR";
     public final static String EXTRA_NEWS_CITY = "extra.NEWS_TEXT";
     public final static String EXTRA_NEWS_RESULT_RECEIVER = "extra.EXTRA_NEWS_RESULT_RECEIVER";
-    public final static String EXTRA_NEWS_BACKGROUND = "extra.NEWS_BACKGROUND";
 
     public final static int NEWS_RESULT_SUCCESS = 1;
     public final static int NEWS_RESULT_ERROR = 2;
@@ -38,21 +36,18 @@ public class NewsIntentService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_NEWS.equals(action)) {
                 final String currentCategory = Storage.getInstance(this).loadCurrentTopic();
-                final String backgroundInfo = intent.getStringExtra(EXTRA_NEWS_BACKGROUND);
-                if (backgroundInfo.equals(BACKGROUND)) {
-                    Log.i(LOG_TAG, "onHandleIntent BACKGROUND");
-                    handleActionNews(currentCategory, null, true);
-                } else {
-                    Log.i(LOG_TAG, "onHandleIntent NOT_BACKGROUND");
-                    final ResultReceiver receiver = intent.getParcelableExtra(EXTRA_NEWS_RESULT_RECEIVER);
-                    handleActionNews(currentCategory, receiver, false);
-                }
+                final ResultReceiver receiver = intent.getParcelableExtra(EXTRA_NEWS_RESULT_RECEIVER);
+                handleActionNews(currentCategory, receiver);
             }
         }
     }
 
-    private void handleActionNews(final String currentCategory, final ResultReceiver receiver, boolean isBackground) {
+    private void handleActionNews(final String currentCategory, final ResultReceiver receiver) {
         Log.i(LOG_TAG, "handleActionNews");
+        boolean isBackground = false;
+        if (receiver == null) {
+            isBackground = true;
+        }
         try {
             final boolean success = NewsProcessor.processCategory(this, currentCategory);
             if (isBackground) {
