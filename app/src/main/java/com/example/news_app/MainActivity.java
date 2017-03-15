@@ -20,11 +20,20 @@ import ru.mail.weather.lib.Topics;
 public class MainActivity extends AppCompatActivity implements ServiceHelper.NewsResultListener {
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
-    Storage newsStorage;
-    TextView headingTextView;
-    TextView contentsTextView;
-    TextView dateTextView;
-    Button categoryChoiceButton;
+    private Storage newsStorage;
+    private TextView headingTextView;
+    private TextView contentsTextView;
+    private TextView dateTextView;
+    private Button categoryChoiceButton;
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            Log.i(LOG_TAG, "BroadcastReceiver onReceive");
+            final boolean success = intent.getAction().equals(NewsIntentService.ACTION_NEWS_RESULT_SUCCESS);
+            onNewsResult(success);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements ServiceHelper.New
         categoryChoiceButton.setText(category);
 
         initBroadcastReceiver(this);
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        super.onPause();
     }
 
     @Override
@@ -149,13 +164,6 @@ public class MainActivity extends AppCompatActivity implements ServiceHelper.New
         filter.addAction(NewsIntentService.ACTION_NEWS_RESULT_SUCCESS);
         filter.addAction(NewsIntentService.ACTION_NEWS_RESULT_ERROR);
 
-        LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                Log.i(LOG_TAG, "BroadcastReceiver onReceive");
-                final boolean success = intent.getAction().equals(NewsIntentService.ACTION_NEWS_RESULT_SUCCESS);
-                onNewsResult(success);
-            }
-        }, filter);
+        LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, filter);
     }
 }
