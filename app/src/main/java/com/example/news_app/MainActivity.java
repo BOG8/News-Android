@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +20,10 @@ import ru.mail.weather.lib.Topics;
 
 public class MainActivity extends AppCompatActivity implements ServiceHelper.NewsResultListener {
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
+    private final static String IS_ON_BACKGROUND_UPDATE = "is_on_background_update";
 
     private Storage newsStorage;
+    private SharedPreferences sharedPreferences;
     private TextView headingTextView;
     private TextView contentsTextView;
     private TextView dateTextView;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ServiceHelper.New
         setContentView(R.layout.activity_main);
 
         newsStorage = Storage.getInstance(this);
+        sharedPreferences = getPreferences(MODE_PRIVATE);
 
         headingTextView = (TextView) findViewById(R.id.heading_text_view);
         contentsTextView = (TextView) findViewById(R.id.contents_text_view);
@@ -113,15 +117,26 @@ public class MainActivity extends AppCompatActivity implements ServiceHelper.New
         @Override
         public void onClick(View view) {
             Log.i(LOG_TAG, "onBackgroundUpdateClick");
-            startBackgroundUpdate();
+            if (!sharedPreferences.getBoolean(IS_ON_BACKGROUND_UPDATE, false)) {
+                Log.i(LOG_TAG, "onBackgroundUpdateClick IS_ON_BACKGROUND_UPDATE - false");
+                startBackgroundUpdate();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(IS_ON_BACKGROUND_UPDATE, true);
+                editor.apply();
+            }
         }
     };
 
     private final View.OnClickListener onStopBackgroundUpdateClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Log.i(LOG_TAG, "onBackgroundUpdateClick");
-            stopBackgroundUpdate();
+            Log.i(LOG_TAG, "onStopBackgroundUpdateClick");
+            if (sharedPreferences.getBoolean(IS_ON_BACKGROUND_UPDATE, false)) {
+                stopBackgroundUpdate();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(IS_ON_BACKGROUND_UPDATE, false);
+                editor.apply();
+            }
         }
     };
 
